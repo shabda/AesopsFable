@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Aesop's Fables</title>
+        <script src="http://cdn.sencha.io/touch/1.1.0/sencha-touch.js" type="text/javascript"></script>
+        <link href="http://cdn.sencha.io/touch/1.1.0/resources/css/sencha-touch.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+ 
+var StoryModel = Ext.regModel("StoryModel", 
+	
+	{idProperty: "id", 
+	fields: ["id", "name", "src", "watched"]
+	}
+);
+
+var StoryStore = Ext.regStore("StoryStore",
+	{
+		model: "StoryModel",
+		proxy: {
+			type: "localstorage",
+			id: "story-app-storage"
+		},
+		data: [{id: 1, name: "Ass and Grasshopper", src: "ass-and-grasshopper.jpg", watced: false},
+				{id: 2, name: "Hercules and Wagoneer", src: "Hercules-and-Wagoneer.jpg", watced: false},
+				]
+	});
+
+var storyReader = new Ext.data.ArrayReader(
+				{"model": "StoryModel"},
+				StoryModel
+			);	
+				
+
+new Ext.Application({
+	name : "Fables",
+    launch: function() {
+		Fables.views.topToolBar = new Ext.Toolbar({title: "Aesop's Fables"})
+		Fables.views.storyList = new Ext.List({ id: 'storyList', 
+						store: 'StoryStore', 
+						itemTpl: '<div class="list-item-title">{id}</div>' + '<div class="list-item-narrative">{name}</div>' }
+						);
+        Fables.views.viewport = new Ext.Panel({
+            fullscreen: true,
+            dockedItems: [Fables.views.topToolBar],
+			items: [Fables.views.storyList],
+            layout: 'vbox',
+			align: 'strech',
+            styleHtmlContent: true,
+        });
+		
+    }
+});
+        </script>
+    </head>
+    <body></body>
+</html>
